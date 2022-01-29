@@ -1,6 +1,8 @@
+version: "3.9"
 services:
   pgdatabase:
     image: postgres:13
+    #container_name: postgres-music
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -8,12 +10,19 @@ services:
     volumes:
       - "./postgres_data:/var/lib/postgresql/data:rw"
     ports:
-      - "5440:5432"
+      - "5439:5432"
 
   pgadmin:
     image: dpage/pgadmin4
+    #container_name: pgadmin-music
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
-      - "8080:80"
+      - "8090:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+    
+volumes:
+    pgadmin-data:
