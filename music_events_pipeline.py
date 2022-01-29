@@ -1,5 +1,4 @@
 
-from distutils.debug import DEBUG
 import requests
 import csv
 from bs4 import BeautifulSoup
