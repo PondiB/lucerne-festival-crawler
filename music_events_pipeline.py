@@ -124,14 +124,14 @@ class MusicalEventsPipeline:
 
 
 def main(params):
-    user = params.user
-    password = params.password
-    host = params.host 
-    port = params.port 
-    db = params.db
-    table_name = params.table_name #ch_lucerne_festival
-    url = params.url # 'https://www.lucernefestival.ch/en/program/summer-festival-22'
-    year= params.year # '2022'
+    user = 'root' #params.user
+    password = 'root'#params.password
+    host = 'localhost'#params.host 
+    port = 5439 #params.port 
+    db = 'music_events' #params.db
+    table_name = 'ch_lucerne_festival' #params.table_name #ch_lucerne_festival
+    url = 'https://www.lucernefestival.ch/en/program/summer-festival-22' #params.url # 'https://www.lucernefestival.ch/en/program/summer-festival-22'
+    year= '2022' #params.year # '2022'
     
     start_time = time()
 

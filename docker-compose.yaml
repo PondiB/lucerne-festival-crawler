@@ -23,6 +23,10 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
+  music-events-pipeline:
+    build: .
+    image: lucerne_music_pipeline:v0.0.1
+
     
 volumes:
     pgadmin-data:

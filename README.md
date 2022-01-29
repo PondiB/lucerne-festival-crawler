@@ -2,6 +2,27 @@
 
 Python ETL pipeline to scrawl Lucerne music events in Switzerland and save them up in a Postgres DB.
 
+
+#### To run without docker you need to set up the variables in the main method
+Run it:
+
+
+```bash
+URL="https://www.lucernefestival.ch/en/program/summer-festival-22"
+
+YEAR="2022"
+
+python3 music_events_pipeline.py \
+    --user=root \
+    --password=root \
+    --host=pgdatabase \
+    --port=5439 \
+    --db=music_events \
+    --table_name=ch_lucerne_festival \
+    --url=${URL}  \
+    --year=${YEAR}
+```
+
 #### docker compose for postgres  and pgadmin4
 Run it:
 
@@ -37,6 +58,22 @@ YEAR="2022"
 
 docker run -it \
   lucerne_music_pipeline:v0.0.1 \
+    --user=root \
+    --password=root \
+    --host=pgdatabase \
+    --port=5439 \
+    --db=music_events \
+    --table_name=ch_lucerne_festival \
+    --url=${URL}  \
+    --year=${YEAR}
+```
+
+```bash
+URL="https://www.lucernefestival.ch/en/program/summer-festival-22"
+
+YEAR="2022"
+
+python music_events_pipeline.py \
     --user=root \
     --password=root \
     --host=pgdatabase \
