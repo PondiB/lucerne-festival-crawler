@@ -9,6 +9,9 @@ from typing import List
 import logging
 from time import time
 import argparse
+from datetime import datetime
+import warnings
+warnings.filterwarnings('ignore')
 
 logging.basicConfig(filename='pipeline.log', level=logging.INFO)
 
@@ -24,6 +27,7 @@ class MusicalEventsPipeline:
     def __init__(self, web_url : str, year : str) -> None:
         self.web_url = web_url 
         self.year = year
+        logging.info(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
         
     def _getsoup(self):
         web_source = requests.get(self.web_url).text
@@ -137,12 +141,15 @@ def main(params):
 
     music_events = MusicalEventsPipeline(url, year)
     music_events.save_to_csv('musical_events_ch.csv')
-    music_events.save_to_postgres(user, password, host, port,db, table_name)
+    music_events.save_to_postgres(user, password, host, port, db, table_name)
 
     end_time = time()
 
     time_taken = end_time - start_time
     logging.info(f'The whole process took {time_taken} seconds')
+
+    logging.info("--------------------------------------------------------------")
+    logging.info("--------------------------------------------------------------")
 
 
 if __name__ == '__main__':

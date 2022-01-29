@@ -12,6 +12,7 @@ services:
     ports:
       - "5439:5432"
 
+
   pgadmin:
     image: dpage/pgadmin4
     #container_name: pgadmin-music
@@ -27,6 +28,5 @@ services:
     build: .
     image: lucerne_music_pipeline:v0.0.1
 
-    
 volumes:
     pgadmin-data:
