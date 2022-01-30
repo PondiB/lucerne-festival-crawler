@@ -2,7 +2,7 @@ version: "3.9"
 services:
   pgdatabase:
     image: postgres:13
-    #container_name: postgres-music
+    container_name: lucerne-music-postgres
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -10,13 +10,13 @@ services:
     volumes:
       - "./postgres_data:/var/lib/postgresql/data:rw"
     ports:
-      - "5439:5432"
+      - "5432:5432"
     restart: always
 
 
   pgadmin:
     image: dpage/pgadmin4
-    #container_name: pgadmin-music
+    container_name: lucerne-music-pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=root
@@ -28,12 +28,13 @@ services:
 
   music-events-pipeline:
     build: .
-    image: lucerne_music_pipeline:v0.0.1
+    image: lucerne-music-pipeline:v0.0.1
+    container_name: lucerne-music-python-etl
     environment:
       - PG_USER=root
       - PG_PASSWORD=root
       - PG_HOST=pgdatabase
-      - PG_PORT=5439
+      - PG_PORT=5432
       - PG_DB_NAME=music_events
       - PG_TABLE_NAME=ch_lucerne_festival
       - WEB_URL=https://www.lucernefestival.ch/en/program/summer-festival-22

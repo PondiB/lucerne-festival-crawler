@@ -3,10 +3,9 @@ import csv
 from bs4 import BeautifulSoup
 import pandas as pd
 from sqlalchemy import create_engine
-from typing import List
+from typing import List, Dict
 import logging
 from time import time
-import argparse
 import os
 from datetime import datetime
 import warnings
@@ -36,8 +35,14 @@ class MusicalEventsPipeline:
         soup = BeautifulSoup(web_source, 'lxml')
         logging.info('Soup is ready')
         return soup
+    
+    def _none_checker(self, field):
+        """
+        Checker that returns None for soup values are empty and returns text data if soup values have content.
+        """
+        return None if field is None else field.get_text().strip()
 
-    def _get_data_from_soup(self) -> List[dict]:
+    def _get_data_from_soup(self) -> List[Dict]:
         """
         Preprocess all the needed data from soup and return as list of dictionaries.
         """
@@ -47,41 +52,39 @@ class MusicalEventsPipeline:
             # Date
             full_date = ''
             date = event.find('p', class_='date')
-            date = None if date is None else date.get_text()
+            date = self._none_checker(date)
             month = event.find('p', class_='month-number')
-            month = None if month is None else month.get_text()
+            month = self._none_checker(month)
             if date is not None and month is not None:
                 full_date = date + month + self.year
             #Event Day-Time
             day_time = event.find('p', class_='day-time')
-            #Event Time
+            #Event Time & Event day as separate values
             time = ''
-            if day_time is not None:
-                time = day_time.find( 'span',class_ ='time')
-                time = None if time is None else time.get_text()
-            #Event day
             day = ''
             if day_time is not None:
+                time = day_time.find( 'span',class_ ='time')
+                time = self._none_checker(time)
                 day = day_time.find( 'span',class_ ='day')
-                day = None if day is None else day.get_text()
+                day = self._none_checker(day)
             # Location
             location = event.find('p', class_='location')
-            location = None if location is None else location.get_text().strip()
+            location = self._none_checker(location)
             # Title
             title = event.find('p', class_='surtitle')
-            title = None if title is None else title.get_text()
+            title = self._none_checker(title)
             # image
             image = event.find('div', class_='image')
-            if image is not None:
+            if self._none_checker(image)is not None:
                 image = str(image)
                 image = image.split("(", 1)[1].split(")")[0]
             # artists
             artists = event.find('p', class_='title')
-            artists = None if artists is None else artists.get_text()
+            artists = self._none_checker(artists)
             if artists is not None:
                 artists = artists.split('|')
             #Add all datasets that are not none to dict
-            if title is not None and artists is not None:
+            if title is not None:
                 data_dict = {
                 "date": full_date,
                 "day" : day,
@@ -148,6 +151,9 @@ def main():
     table_name = os.environ['PG_TABLE_NAME']
     url = os.environ['WEB_URL']
     year= os.environ['YEAR']
+    # To check if things work in docker-compose up
+    print("CHECKING ENVIRONS ....")
+    print(user, password, host, port, db, table_name, url, year)
     
     start_time = time()
 
