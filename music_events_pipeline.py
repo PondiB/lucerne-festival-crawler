@@ -8,6 +8,7 @@ from typing import List
 import logging
 from time import time
 import argparse
+import os
 from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
@@ -49,9 +50,18 @@ class MusicalEventsPipeline:
             month = None if month is None else month.get_text()
             if date is not None and month is not None:
                 full_date = date + month + self.year
-            # Time
-            time = event.find('p', class_='day-time')
-            time = None if time is None else time.get_text()
+            #Event Day-Time
+            day_time = event.find('p', class_='day-time')
+            #Event Time
+            time = ''
+            if day_time is not None:
+                time = day_time.find( 'span',class_ ='time')
+                time = None if time is None else time.get_text()
+            #Event day
+            day = ''
+            if day_time is not None:
+                day = day_time.find( 'span',class_ ='day')
+                day = None if day is None else day.get_text()
             # Location
             location = event.find('p', class_='location')
             location = None if location is None else location.get_text().strip()
@@ -72,6 +82,7 @@ class MusicalEventsPipeline:
             if title is not None and artists is not None:
                 data_dict = {
                 "date": full_date,
+                "day" : day,
                 "time": time,
                 "title": title,
                 "artists": artists,
@@ -127,19 +138,19 @@ class MusicalEventsPipeline:
 
 
 def main(params):
-    user = 'root' #params.user
-    password = 'root'#params.password
-    host = 'localhost'#params.host 
-    port = 5439 #params.port 
-    db = 'music_events' #params.db
-    table_name = 'ch_lucerne_festival' #params.table_name #ch_lucerne_festival
-    url = 'https://www.lucernefestival.ch/en/program/summer-festival-22' #params.url # 'https://www.lucernefestival.ch/en/program/summer-festival-22'
-    year= '2022' #params.year # '2022'
+    user = 'root' #os.environ['PG_USER']
+    password = 'root'#os.environ['PG_PASSWORD']
+    host = 'localhost'#os.environ['PG_HOST']
+    port = '5439' #os.environ['PG_PORT']
+    db = 'music_events' #os.environ['PG_DB_NAME']
+    table_name = 'ch_lucerne_festival' #os.environ['PG_TABLE_NAME']
+    url = 'https://www.lucernefestival.ch/en/program/summer-festival-22' #os.environ['WEB_URL']
+    year= '2022' #os.environ['YEAR']
     
     start_time = time()
 
     music_events = MusicalEventsPipeline(url, year)
-    music_events.save_to_csv('musical_events_ch.csv')
+    music_events.save_to_csv('ch_lucerne_festival_events.csv')
     music_events.save_to_postgres(user, password, host, port, db, table_name)
 
     end_time = time()

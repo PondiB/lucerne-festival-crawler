@@ -11,6 +11,7 @@ services:
       - "./postgres_data:/var/lib/postgresql/data:rw"
     ports:
       - "5439:5432"
+    restart: always
 
 
   pgadmin:
@@ -23,10 +24,22 @@ services:
       - "8090:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    restart: always
 
   music-events-pipeline:
     build: .
     image: lucerne_music_pipeline:v0.0.1
+    environment:
+      - PG_USER=root
+      - PG_PASSWORD=root
+      - PG_HOST=pgdatabase
+      - PG_PORT=5439
+      - PG_DB_NAME=music_events
+      - PG_TABLE_NAME=ch_lucerne_festival
+      - WEB_URL=https://www.lucernefestival.ch/en/program/summer-festival-22
+      - YEAR=2022
+    depends_on:
+      - pgdatabase
 
 volumes:
     pgadmin-data:
