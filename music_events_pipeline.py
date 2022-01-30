@@ -151,9 +151,6 @@ def main():
     table_name = os.environ['PG_TABLE_NAME']
     url = os.environ['WEB_URL']
     year= os.environ['YEAR']
-    # To check if things work in docker-compose up
-    print("CHECKING ENVIRONS ....")
-    print(user, password, host, port, db, table_name, url, year)
     
     start_time = time()
 

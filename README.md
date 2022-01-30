@@ -27,8 +27,9 @@ docker-compose down
 You can set up a virtual environment , activate and then run this command.
 
 ```bash
-pip install beautifulsoup4 pandas lxml requests sqlalchemy psycopg2
+pip install beautifulsoup4 pandas lxml requests sqlalchemy psycopg2-binary
 ```
+Another option will be via ~~requirements.txt~~ but  I did not generate the file content.
 
 Run it:
 
@@ -44,7 +45,7 @@ Assuming you have hosted postgres, you can change the parameters
 Build the image
 
 ```bash
-docker build -t lucerne_music_pipeline:v0.0.1 .
+docker build -t lucerne-music-pipeline:v0.0.1 .
 ```
 
 Run the python script as a standalone with Docker
