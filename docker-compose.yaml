@@ -38,8 +38,11 @@ services:
       - PG_TABLE_NAME=ch_lucerne_festival
       - WEB_URL=https://www.lucernefestival.ch/en/program/summer-festival-22
       - YEAR=2022
+    volumes:
+      - ./music_events_pipeline.py:/music_events_pipeline.py
     depends_on:
       - pgdatabase
+    command: python music_events_pipeline.py
 
 volumes:
     pgadmin-data:

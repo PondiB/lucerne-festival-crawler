@@ -1,4 +1,3 @@
-
 import requests
 import csv
 from bs4 import BeautifulSoup
@@ -137,15 +136,15 @@ class MusicalEventsPipeline:
         logging.info('Finished inserting the data to Postgres')
 
 
-def main(params):
-    user = 'root' #os.environ['PG_USER']
-    password = 'root'#os.environ['PG_PASSWORD']
-    host = 'localhost'#os.environ['PG_HOST']
-    port = '5439' #os.environ['PG_PORT']
-    db = 'music_events' #os.environ['PG_DB_NAME']
-    table_name = 'ch_lucerne_festival' #os.environ['PG_TABLE_NAME']
-    url = 'https://www.lucernefestival.ch/en/program/summer-festival-22' #os.environ['WEB_URL']
-    year= '2022' #os.environ['YEAR']
+def main():
+    user = os.environ['PG_USER']
+    password = os.environ['PG_PASSWORD']
+    host = os.environ['PG_HOST']
+    port = os.environ['PG_PORT']
+    db = os.environ['PG_DB_NAME']
+    table_name = os.environ['PG_TABLE_NAME']
+    url = os.environ['WEB_URL']
+    year= os.environ['YEAR']
     
     start_time = time()
 
@@ -163,16 +162,4 @@ def main(params):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='ETL pipeline for Lucerne Festival, saves data to Postgres DB')
-
-    parser.add_argument('--user', required=True, help='user name for postgres')
-    parser.add_argument('--password', required=True, help='password for postgres')
-    parser.add_argument('--host', required=True, help='host for postgres')
-    parser.add_argument('--port', required=True, help='port for postgres')
-    parser.add_argument('--db', required=True, help='database name for postgres')
-    parser.add_argument('--table_name', required=True, help='name of the table where we will write the results to')
-    parser.add_argument('--url', required=True, help='url of lucerne festival website')
-    parser.add_argument('--year', required=True, help='the year of the events in string format')
-
-    args = parser.parse_args()
-    main(args)
+    main()
