@@ -29,6 +29,9 @@ class MusicalEventsPipeline:
         logging.info(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
         
     def _getsoup(self):
+        """
+        Returns soup of the website to be crawled on.
+        """
         web_source = requests.get(self.web_url).text
         soup = BeautifulSoup(web_source, 'lxml')
         logging.info('Soup is ready')
