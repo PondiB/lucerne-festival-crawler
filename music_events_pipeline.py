@@ -115,17 +115,17 @@ class MusicalEventsPipeline:
         Convert data list of dicts to pandas dataframe.
         """
         data = self._get_data_from_soup()
-        df = pd.DataFrame(data)
-        return df
+        data_frame = pd.DataFrame(data)
+        return data_frame
 
     def _convert_datestring_to_date(self) -> pd.DataFrame:
         """
         The date field comes in as a string, it's ideal to have it as a timestamp.
         """
-        df = self._data_to_pandas_df()
-        df['date'] = pd.to_datetime(df['date'])
+        data_frame = self._data_to_pandas_df()
+        data_frame['date'] = pd.to_datetime(data_frame['date'])
         logging.info('Converted string date format to datetimestamp')
-        return df
+        return data_frame
 
     def save_to_postgres(self, user:str, password : str, host : str,
                         port: str, db: str, table_name : str) -> None:
@@ -134,11 +134,11 @@ class MusicalEventsPipeline:
         """
         engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
         with engine.connect() as dbconnection:
-            df = self._convert_datestring_to_date()
-            pd.io.sql.get_schema(df, name=table_name, con=dbconnection)
-            logging.info(pd.io.sql.get_schema(df, name=table_name, con=dbconnection))
-            df.head(n=0).to_sql(name=table_name, con=dbconnection, if_exists='replace')
-            df.to_sql(name=table_name, con=dbconnection, if_exists='append')
+            data_frame = self._convert_datestring_to_date()
+            pd.io.sql.get_schema(data_frame, name=table_name, con=dbconnection)
+            logging.info(pd.io.sql.get_schema(data_frame, name=table_name, con=dbconnection))
+            data_frame.head(n=0).to_sql(name=table_name, con=dbconnection, if_exists='replace')
+            data_frame.to_sql(name=table_name, con=dbconnection, if_exists='append')
             logging.info('Finished inserting the data to Postgres')
 
 
