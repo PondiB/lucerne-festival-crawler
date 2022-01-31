@@ -133,13 +133,13 @@ class MusicalEventsPipeline:
         Saves Lucerne Festival events into a postgresql DB.
         """
         engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
-        engine.connect()
-        df = self._convert_datestring_to_date()
-        pd.io.sql.get_schema(df, name=table_name, con=engine)
-        logging.info(pd.io.sql.get_schema(df, name=table_name, con=engine))
-        df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
-        df.to_sql(name=table_name, con=engine, if_exists='append')
-        logging.info('Finished inserting the data to Postgres')
+        with engine.connect() as dbconnection:
+            df = self._convert_datestring_to_date()
+            pd.io.sql.get_schema(df, name=table_name, con=dbconnection)
+            logging.info(pd.io.sql.get_schema(df, name=table_name, con=dbconnection))
+            df.head(n=0).to_sql(name=table_name, con=dbconnection, if_exists='replace')
+            df.to_sql(name=table_name, con=dbconnection, if_exists='append')
+            logging.info('Finished inserting the data to Postgres')
 
 
 def main():
