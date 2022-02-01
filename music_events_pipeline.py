@@ -82,7 +82,7 @@ class MusicalEventsPipeline:
 
     def _get_artist_details(self, event: BeautifulSoup) -> str:
         """
-        Return a list of artists name from the event.
+        Return artists name from the event.
         """
         artists = event.find('p', class_='title')
         artists = self._soup_none_checker(artists)
