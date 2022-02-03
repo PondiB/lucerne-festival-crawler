@@ -20,7 +20,7 @@ __status__  = "Development"
 
 class MusicalEventsPipeline:
     """
-    This class crawls the Lucerne festival events scheduled for 2022 in Switzerland and saves the data in a Postgres Database.
+    This class crawls the Lucerne festival events scheduled in Switzerland and saves the data in a Postgres Database.
     """
 
     def __init__(self, web_url : str, year : str) -> None:
@@ -114,7 +114,8 @@ class MusicalEventsPipeline:
         """
         data = []
         soup = self._getsoup()
-        for event in soup.find_all('div', class_='entry'):
+        events = soup.find_all('div', class_='entry')
+        for event in events: 
             # Full Date
             full_date = self._get_date_details(event)
             # Event Day-Time
