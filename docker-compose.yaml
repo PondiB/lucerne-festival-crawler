@@ -31,14 +31,14 @@ services:
     image: lucerne-music-pipeline:v0.0.1
     container_name: lucerne-music-python-etl
     environment:
-      - PG_USER=root
-      - PG_PASSWORD=root
-      - PG_HOST=pgdatabase
-      - PG_PORT=5432
-      - PG_DB_NAME=music_events
-      - PG_TABLE_NAME=ch_lucerne_festival
-      - WEB_URL=https://www.lucernefestival.ch/en/program/summer-festival-22
-      - YEAR=2022
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_DB_NAME=${PG_DB_NAME}
+      - PG_TABLE_NAME=${PG_TABLE_NAME}
+      - WEB_URL=${WEB_URL}
+      - YEAR=${YEAR}
     volumes:
       - ./music_events_pipeline.py:/music_events_pipeline.py
     depends_on:

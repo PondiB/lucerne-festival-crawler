@@ -13,7 +13,7 @@ git clone https://github.com/PondiB/musical-events-crawler.git
 then you can change to that directory
 
 ```bash
-cd musical-events-crawler
+$cd musical-events-crawler
 ```
 
 Run in detached mode (what I recommend):
@@ -49,39 +49,7 @@ Another option will be via requirements.txt but  I did not generate the file con
 Run it:
 
 ```bash
-
 python3 music_events_pipeline.py 
-
-```
-
-
-#### Hosted DB: building and running image for the pipeline, passing in relevant params
-Assuming you have hosted postgres, you can change the parameters
-Build the image
-
-```bash
-docker build -t lucerne-music-pipeline:v0.0.1 .
-```
-
-Run the python script as a standalone with Docker
-
-```bash
-URL="https://www.lucernefestival.ch/en/program/summer-festival-22"
-
-YEAR="2022"
-HOST=""
-PORT=""
-
-docker run -it \
-  lucerne-music-pipeline:v0.0.1 \
-    --user=root \
-    --password=root \
-    --host=${HOST} \
-    --port=${PORT} \
-    --db=music_events \
-    --table_name=ch_lucerne_festival \
-    --url=${URL}  \
-    --year=${YEAR}
 ```
 
 

@@ -18,7 +18,7 @@ __author__  = "Brian Pondi"
 __status__  = "Development"
 
 
-class MusicalEventsPipeline:
+class LucerneFestivalEventsPipeline:
     """
     This class crawls the Lucerne festival events scheduled in Switzerland and saves the data in a Postgres Database.
     """
@@ -202,7 +202,7 @@ def main():
 
     start_time = time()
 
-    music_events = MusicalEventsPipeline(url, year)
+    music_events = LucerneFestivalEventsPipeline(url, year)
     music_events.save_to_csv('ch_lucerne_festival_events.csv')
     music_events.save_to_postgres(user, password, host, port, db, table_name)
 
