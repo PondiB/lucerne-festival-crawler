@@ -13,7 +13,7 @@ git clone https://github.com/PondiB/musical-events-crawler.git
 then you can change to that directory
 
 ```bash
-$cd musical-events-crawler
+cd musical-events-crawler
 ```
 
 Run in detached mode (what I recommend):
